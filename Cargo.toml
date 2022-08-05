@@ -1,0 +1,22 @@
+[package]
+name = "mobile"
+version = "0.1.0"
+authors = ["hakolao <okkohakola@gmail.com>"]
+edition = "2018"
+
+[lib]
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[[bin]]
+name = "mobile-desktop"
+path = "gen/bin/desktop.rs"
+
+[dependencies]
+mobile-entry-point = "0.1.0"
+vulkano = { path = "../vulkano/vulkano" }
+vulkano-shaders = { path = "../vulkano/vulkano-shaders" }
+vulkano-win = { path = "../vulkano/vulkano-win" }
+winit = "0.27"
+bytemuck = "1.9.1"
+cgmath = "0.18"
+rand = "0.8.4"

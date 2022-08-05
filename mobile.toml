@@ -1,0 +1,8 @@
+[app]
+name = "mobile"
+stylized-name = "Mobile"
+domain = "okkohakola.com"
+template-pack = "winit"
+
+[apple]
+development-team = "Okko Hakola"
