@@ -6,16 +6,23 @@ use crate::game_of_life::GameOfLife;
 use crate::place_over_frame::RenderPassPlaceOverFrame;
 use bevy::prelude::*;
 use bevy::time::FixedTimestep;
-use bevy::window::WindowDescriptor;
+use bevy::window::{WindowDescriptor, WindowResized};
 use bevy_vulkano::{BevyVulkanoWindows, VulkanoWinitConfig, VulkanoWinitPlugin};
 use mobile_entry_point::mobile_entry_point;
 use vulkano::image::ImageAccess;
+
+const WIDTH: u32 = 128;
+const HEIGHT: u32 = 256;
 
 #[mobile_entry_point]
 fn main() {
     App::new()
         .insert_non_send_resource(VulkanoWinitConfig::default())
-        .insert_resource(WindowDescriptor::default())
+        .insert_resource(WindowDescriptor {
+            width: (WIDTH * 2) as f32,
+            height: (HEIGHT * 2) as f32,
+            ..WindowDescriptor::default()
+        })
         .add_plugin(bevy::core::CorePlugin)
         .add_plugin(bevy::input::InputPlugin)
         .add_plugin(bevy::time::TimePlugin)
@@ -29,13 +36,17 @@ fn main() {
                 .with_system(simulate.after(draw_life_system)),
         )
         .add_system_set_to_stage(CoreStage::PostUpdate, SystemSet::new().with_system(render))
+        .add_system_set_to_stage(
+            CoreStage::Last,
+            SystemSet::new().with_system(update_image_size_on_resize),
+        )
         .run();
 }
 
 fn startup(mut commands: Commands, vulkano_windows: NonSend<BevyVulkanoWindows>) {
     let primary_window = vulkano_windows.get_primary_window_renderer().unwrap();
     // Create compute pipeline to simulate game of life
-    let game_of_life = GameOfLife::new(primary_window.graphics_queue(), [128, 128]);
+    let game_of_life = GameOfLife::new(primary_window.graphics_queue(), [WIDTH, HEIGHT]);
 
     // Create our render pass
     let place_over_frame = RenderPassPlaceOverFrame::new(
@@ -47,12 +58,29 @@ fn startup(mut commands: Commands, vulkano_windows: NonSend<BevyVulkanoWindows>)
     commands.insert_resource(place_over_frame);
 }
 
+// Ensure image size is good for the resolution
+fn update_image_size_on_resize(
+    mut commands: Commands,
+    vulkano_windows: NonSend<BevyVulkanoWindows>,
+    mut event_reader: EventReader<WindowResized>,
+) {
+    if let Some(e) = event_reader.iter().last() {
+        let primary_window = vulkano_windows.get_primary_window_renderer().unwrap();
+        let scale = 2;
+        // Shader local sizes are 8
+        let width = e.width as u32 / scale - ((e.width as u32 / scale) % 8);
+        let height = e.height as u32 / scale - ((e.height as u32 / scale) % 8);
+        let game_of_life = GameOfLife::new(primary_window.graphics_queue(), [width, height]);
+        commands.insert_resource(game_of_life);
+    }
+}
+
 /// Draw life at mouse position on the game of life canvas
 fn draw_life_system(
     mut game_of_life: ResMut<GameOfLife>,
     windows: ResMut<Windows>,
     mouse_input: Res<Input<MouseButton>>,
-    #[cfg(target_os = "ios")] mut touch_input_reader: EventReader<TouchInput>,
+    #[cfg(target_os = "ios")] touches: Res<Touches>,
 ) {
     fn normalized_window_pos(pos: Vec2, window: &bevy::window::Window) -> Vec2 {
         let width = window.width();
@@ -79,24 +107,19 @@ fn draw_life_system(
         }
     }
     #[cfg(target_os = "ios")]
-    for e in touch_input_reader.iter() {
-        match e.phase {
-            bevy::input::touch::TouchPhase::Started | bevy::input::touch::TouchPhase::Moved => {
-                let pos = e.position;
-                let normalized = normalized_window_pos(pos, &windows.get_primary().unwrap());
-                let image_size = game_of_life
-                    .color_image()
-                    .image()
-                    .dimensions()
-                    .width_height();
-                let draw_pos = IVec2::new(
-                    (image_size[0] as f32 * normalized.x) as i32,
-                    (image_size[1] as f32 * normalized.y) as i32,
-                );
-                game_of_life.draw_life(draw_pos);
-            }
-            _ => (),
-        }
+    for touch in touches.iter() {
+        let pos = touch.position();
+        let normalized = normalized_window_pos(pos, &windows.get_primary().unwrap());
+        let image_size = game_of_life
+            .color_image()
+            .image()
+            .dimensions()
+            .width_height();
+        let draw_pos = IVec2::new(
+            (image_size[0] as f32 * normalized.x) as i32,
+            (image_size[1] as f32 * normalized.y) as i32,
+        );
+        game_of_life.draw_life(draw_pos);
     }
 }
 
