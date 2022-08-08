@@ -1,5 +1,5 @@
 [package]
-name = "mobile"
+name = "bevy-vulkano-ios"
 version = "0.1.0"
 authors = ["hakolao <okkohakola@gmail.com>"]
 edition = "2018"
@@ -8,15 +8,17 @@ edition = "2018"
 crate-type = ["staticlib", "cdylib", "rlib"]
 
 [[bin]]
-name = "mobile-desktop"
+name = "bevy-vulkano-ios-desktop"
 path = "gen/bin/desktop.rs"
 
 [dependencies]
 mobile-entry-point = "0.1.0"
-vulkano = { path = "../vulkano/vulkano" }
-vulkano-shaders = { path = "../vulkano/vulkano-shaders" }
-vulkano-win = { path = "../vulkano/vulkano-win" }
-winit = "0.27"
-bytemuck = "1.9.1"
-cgmath = "0.18"
-rand = "0.8.4"
+winit = "0.23.0"
+
+[target.'cfg(target_os = "android")'.dependencies]
+android_logger = "0.9.0"
+log = "0.4.11"
+ndk-glue = "0.2.1"
+
+[target.'cfg(not(target_os = "android"))'.dependencies]
+simple_logger = "1.11.0"

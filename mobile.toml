@@ -1,8 +1,8 @@
 [app]
-name = "mobile"
-stylized-name = "Mobile"
-domain = "okkohakola.com"
+name = "bevy-vulkano-ios"
+stylized-name = "Bevy Vulkano Ios"
+domain = "bevyvulkanoios.com"
 template-pack = "winit"
 
 [apple]
-development-team = "Okko Hakola"
+development-team = "8KRAT5VVZQ"
