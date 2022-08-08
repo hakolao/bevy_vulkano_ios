@@ -1,9 +1,9 @@
 mod game_of_life;
-mod pixels_draw_pipeline;
-mod place_over_frame;
+mod quad_pipeline;
+mod render_pass;
 
 use crate::game_of_life::GameOfLife;
-use crate::place_over_frame::RenderPassPlaceOverFrame;
+use crate::render_pass::FillScreenRenderPass;
 use bevy::prelude::*;
 use bevy::time::FixedTimestep;
 use bevy::window::{WindowDescriptor, WindowResized};
@@ -13,6 +13,7 @@ use vulkano::image::ImageAccess;
 
 const WIDTH: u32 = 128;
 const HEIGHT: u32 = 256;
+const CLEAR_COLOR: [f32; 4] = [0.0; 4];
 
 #[mobile_entry_point]
 fn main() {
@@ -49,13 +50,13 @@ fn startup(mut commands: Commands, vulkano_windows: NonSend<BevyVulkanoWindows>)
     let game_of_life = GameOfLife::new(primary_window.graphics_queue(), [WIDTH, HEIGHT]);
 
     // Create our render pass
-    let place_over_frame = RenderPassPlaceOverFrame::new(
+    let fill_screen = FillScreenRenderPass::new(
         primary_window.graphics_queue(),
         primary_window.swapchain_format(),
     );
     // Insert resources
     commands.insert_resource(game_of_life);
-    commands.insert_resource(place_over_frame);
+    commands.insert_resource(fill_screen);
 }
 
 // Ensure image size is good for the resolution
@@ -65,12 +66,14 @@ fn update_image_size_on_resize(
     mut event_reader: EventReader<WindowResized>,
 ) {
     if let Some(e) = event_reader.iter().last() {
-        let primary_window = vulkano_windows.get_primary_window_renderer().unwrap();
+        let primary = vulkano_windows.get_primary_window_renderer().unwrap();
+        let window = vulkano_windows.get_primary_winit_window().unwrap();
+        println!("Scale factor {}", window.scale_factor());
         let scale = 2;
         // Shader local sizes are 8
         let width = e.width as u32 / scale - ((e.width as u32 / scale) % 8);
         let height = e.height as u32 / scale - ((e.height as u32 / scale) % 8);
-        let game_of_life = GameOfLife::new(primary_window.graphics_queue(), [width, height]);
+        let game_of_life = GameOfLife::new(primary.graphics_queue(), [width, height]);
         commands.insert_resource(game_of_life);
     }
 }
@@ -132,7 +135,7 @@ fn simulate(mut game_of_life: ResMut<GameOfLife>) {
 fn render(
     mut vulkano_windows: NonSendMut<BevyVulkanoWindows>,
     game_of_life: Res<GameOfLife>,
-    mut place_over_frame: ResMut<RenderPassPlaceOverFrame>,
+    mut fill_screen: ResMut<FillScreenRenderPass>,
 ) {
     let primary_window = vulkano_windows.get_primary_window_renderer_mut().unwrap();
 
@@ -147,7 +150,7 @@ fn render(
 
     let color_image = game_of_life.color_image();
     let final_image = primary_window.swapchain_image_view();
-    let after_render = place_over_frame.render(before, color_image, final_image);
+    let after_render = fill_screen.draw(before, color_image, final_image, CLEAR_COLOR);
 
     // Finish Frame
     primary_window.present(after_render, true);
