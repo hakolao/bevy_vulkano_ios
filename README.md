@@ -5,7 +5,7 @@ on iOS.
 
 The app bundle has been generated using [cargo-mobile](https://github.com/BrainiumLLC/cargo-mobile). `MoltenVK` framework from VulkanSDK has been added using xcode.
 
-## Run
+## Run iOS
 
 1. Install [cargo-mobile](https://github.com/BrainiumLLC/cargo-mobile) and make sure you have xcode installed
 2. Run `cargo mobile init`
@@ -14,6 +14,10 @@ The app bundle has been generated using [cargo-mobile](https://github.com/Braini
 5. For this project, link `MoltenVK.xcframework`. This is necessary for `Vulkano` to work. Your SDK install might be found somewhere like `~/VulkanSDK/1.3.216.0/MoltenVK/MoltenVK.xcframework`, You can do this in XCode -> General -> Frameworks, Libraries, and Embedded Content
 6. Attach your mobile device via cord to your mac
 7. Run `cargo apple run`. Keep your mobile device unlocked.
+
+## Run MacOS
+
+After installing `cargo-mobile` and `cargo-mobile-init`, just run `cargo run`.
 
 ## Note!
 - If you get an error `error: the use of xcframeworks is not supported in the legacy build system.`, modify your xcode project
