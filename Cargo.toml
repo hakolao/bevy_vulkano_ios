@@ -19,3 +19,4 @@ vulkano-util = { git = "https://github.com/hakolao/vulkano", branch = "ios-fix" 
 vulkano-win = { git = "https://github.com/hakolao/vulkano", branch = "ios-fix" }
 winit = "0.27.1"
 bytemuck = "1.7"
+raw-window-handle = "0.5.0"

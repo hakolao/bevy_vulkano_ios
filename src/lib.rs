@@ -47,7 +47,7 @@ use vulkano::{
     sync::{self, FlushError, GpuFuture},
     VulkanLibrary,
 };
-use vulkano_win::VkSurfaceBuild;
+use vulkano_win::create_surface_from_handle;
 use winit::dpi::PhysicalSize;
 use winit::{
     event::{Event, WindowEvent},
@@ -90,10 +90,11 @@ fn main() {
     // This returns a `vulkano::swapchain::Surface` object that contains both a cross-platform winit
     // window and a cross-platform Vulkan surface that represents the surface of the window.
     let event_loop = EventLoop::new();
-    let surface = WindowBuilder::new()
+    let window = WindowBuilder::new()
         .with_inner_size(PhysicalSize::new(512, 512))
-        .build_vk_surface(&event_loop, instance.clone())
+        .build(&event_loop)
         .unwrap();
+    let surface = create_surface_from_handle(window, instance.clone()).unwrap();
 
     // Choose device extensions that we're going to use.
     // In order to present images to a surface, we need a `Swapchain`, which is provided by the
