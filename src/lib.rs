@@ -4,6 +4,7 @@ mod render_pass;
 
 use crate::game_of_life::GameOfLife;
 use crate::render_pass::FillScreenRenderPass;
+use bevy::input::touch::touch_screen_input_system;
 use bevy::prelude::*;
 use bevy::time::FixedTimestep;
 use bevy::window::{WindowDescriptor, WindowResized};
@@ -29,6 +30,7 @@ fn main() {
         .add_plugin(bevy::time::TimePlugin)
         .add_plugin(VulkanoWinitPlugin)
         .add_startup_system(startup)
+        .add_system(touch_screen_input_system)
         .add_system(draw_life_system)
         .add_system_set_to_stage(
             CoreStage::Update,
@@ -68,7 +70,6 @@ fn update_image_size_on_resize(
     if let Some(e) = event_reader.iter().last() {
         let primary = vulkano_windows.get_primary_window_renderer().unwrap();
         let window = vulkano_windows.get_primary_winit_window().unwrap();
-        println!("Scale factor {}", window.scale_factor());
         let scale = 2;
         // Shader local sizes are 8
         let width = e.width as u32 / scale - ((e.width as u32 / scale) % 8);
@@ -106,7 +107,7 @@ fn draw_life_system(
                 (image_size[0] as f32 * normalized.x) as i32,
                 (image_size[1] as f32 * normalized.y) as i32,
             );
-            game_of_life.draw_life(draw_pos);
+            game_of_life.draw_life(draw_pos, 4);
         }
     }
     #[cfg(target_os = "ios")]

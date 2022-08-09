@@ -2610,16 +2610,18 @@ dependencies = [
 [[package]]
 name = "vulkano"
 version = "0.30.0"
-source = "git+https://github.com/hakolao/vulkano?branch=ios-fix#6d297e37c7a572ef9746ff5ed8a1c1c5f2fc9243"
+source = "git+https://github.com/hakolao/vulkano?branch=ios-fix#3bc71c0b53fca8c6748e9a5a7a2d116a606e027a"
 dependencies = [
  "ash",
  "bytemuck",
+ "core-graphics-types",
  "crossbeam-queue",
  "half",
  "heck",
  "indexmap",
  "lazy_static",
  "libloading",
+ "objc",
  "once_cell",
  "parking_lot",
  "proc-macro2",
@@ -2634,7 +2636,7 @@ dependencies = [
 [[package]]
 name = "vulkano-shaders"
 version = "0.30.0"
-source = "git+https://github.com/hakolao/vulkano?branch=ios-fix#6d297e37c7a572ef9746ff5ed8a1c1c5f2fc9243"
+source = "git+https://github.com/hakolao/vulkano?branch=ios-fix#3bc71c0b53fca8c6748e9a5a7a2d116a606e027a"
 dependencies = [
  "heck",
  "proc-macro2",
@@ -2647,7 +2649,7 @@ dependencies = [
 [[package]]
 name = "vulkano-util"
 version = "0.30.0"
-source = "git+https://github.com/hakolao/vulkano?branch=ios-fix#6d297e37c7a572ef9746ff5ed8a1c1c5f2fc9243"
+source = "git+https://github.com/hakolao/vulkano?branch=ios-fix#3bc71c0b53fca8c6748e9a5a7a2d116a606e027a"
 dependencies = [
  "vulkano",
  "vulkano-win",
@@ -2657,7 +2659,7 @@ dependencies = [
 [[package]]
 name = "vulkano-win"
 version = "0.30.0"
-source = "git+https://github.com/hakolao/vulkano?branch=ios-fix#6d297e37c7a572ef9746ff5ed8a1c1c5f2fc9243"
+source = "git+https://github.com/hakolao/vulkano?branch=ios-fix#3bc71c0b53fca8c6748e9a5a7a2d116a606e027a"
 dependencies = [
  "core-graphics-types",
  "objc",

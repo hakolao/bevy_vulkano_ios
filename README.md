@@ -3,7 +3,7 @@
 This app is a working example running [Bevy](https://github.com/bevyengine) and [Vulkano](https://github.com/vulkano-rs/vulkano)
 on iOS.
 
-The app bundle has been generated using [cargo-mobile](https://github.com/BrainiumLLC/cargo-mobile).
+The app bundle has been generated using [cargo-mobile](https://github.com/BrainiumLLC/cargo-mobile). `MoltenVK` framework from VulkanSDK has been added using xcode.
 
 ## Run
 
@@ -21,4 +21,6 @@ build settings in _File -> Project Settings -> Build System_: Select _New Build 
 - Also, debugging won't work unless your xcode supports the same iOS version which your device is running.
 - Winit does not have the screen flip events, thus it might be better to disable them in xcode for the project in _General -> Deployment Info -> Device Orientation_
 
+Result: 
 
+![game_of_life](./game_of_life.jpg)

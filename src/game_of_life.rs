@@ -93,7 +93,7 @@ impl GameOfLife {
         self.image.clone()
     }
 
-    pub fn draw_life(&mut self, pos: IVec2) {
+    pub fn draw_life(&mut self, pos: IVec2, radius: i32) {
         let mut life_in = {
             if self.sim_steps % 2 == 0 {
                 self.life_out.write().unwrap()
@@ -105,8 +105,28 @@ impl GameOfLife {
         if pos.y < 0 || pos.y >= size[1] as i32 || pos.x < 0 || pos.x >= size[0] as i32 {
             return;
         }
-        let index = (pos.y * size[0] as i32 + pos.x) as usize;
-        life_in[index] = 1;
+        let y_start = pos.y - radius;
+        let y_end = pos.y + radius;
+        let x_start = pos.x - radius;
+        let x_end = pos.x + radius;
+        for y in y_start..=y_end {
+            for x in x_start..=x_end {
+                let world_pos = bevy::math::Vec2::new(x as f32, y as f32);
+                if world_pos
+                    .distance(bevy::math::Vec2::new(pos.x as f32, pos.y as f32))
+                    .round()
+                    <= radius as f32
+                {
+                    let pos = world_pos.as_ivec2();
+                    if pos.y < 0 || pos.y >= size[1] as i32 || pos.x < 0 || pos.x >= size[0] as i32
+                    {
+                        continue;
+                    }
+                    let index = (pos.y * size[0] as i32 + pos.x) as usize;
+                    life_in[index] = 1;
+                }
+            }
+        }
     }
 
     pub fn compute(&mut self, life_color: [f32; 4], dead_color: [f32; 4]) {

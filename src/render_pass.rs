@@ -75,7 +75,7 @@ impl FillScreenRenderPass {
             },
         )
         .unwrap();
-        // Create primary command buffer builder & begin render pass with black clear color
+        // Create primary command buffer builder & begin render pass
         let mut command_buffer_builder = AutoCommandBufferBuilder::primary(
             self.gfx_queue.device().clone(),
             self.gfx_queue.family(),
