@@ -69,7 +69,6 @@ fn update_image_size_on_resize(
 ) {
     if let Some(e) = event_reader.iter().last() {
         let primary = vulkano_windows.get_primary_window_renderer().unwrap();
-        let window = vulkano_windows.get_primary_winit_window().unwrap();
         let scale = 2;
         // Shader local sizes are 8
         let width = e.width as u32 / scale - ((e.width as u32 / scale) % 8);
@@ -107,7 +106,7 @@ fn draw_life_system(
                 (image_size[0] as f32 * normalized.x) as i32,
                 (image_size[1] as f32 * normalized.y) as i32,
             );
-            game_of_life.draw_life(draw_pos, 4);
+            game_of_life.draw_life(draw_pos, 6);
         }
     }
     #[cfg(target_os = "ios")]

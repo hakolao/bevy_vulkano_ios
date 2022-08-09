@@ -123,7 +123,9 @@ impl GameOfLife {
                         continue;
                     }
                     let index = (pos.y * size[0] as i32 + pos.x) as usize;
-                    life_in[index] = 1;
+                    if rand::thread_rng().gen::<f32>() > 0.5 {
+                        life_in[index] = 1
+                    };
                 }
             }
         }
