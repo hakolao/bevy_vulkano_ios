@@ -13,14 +13,9 @@ path = "gen/bin/desktop.rs"
 
 [dependencies]
 mobile-entry-point = "0.1.0"
-bevy_vulkano = { git = "https://github.com/hakolao/bevy_vulkano", branch = "ios", default_features = false, features = [] }
 vulkano = { git = "https://github.com/hakolao/vulkano", branch = "ios-fix" }
 vulkano-shaders = { git = "https://github.com/hakolao/vulkano", branch = "ios-fix" }
 vulkano-util = { git = "https://github.com/hakolao/vulkano", branch = "ios-fix" }
-rand = "0.8.5"
+vulkano-win = { git = "https://github.com/hakolao/vulkano", branch = "ios-fix" }
+winit = "0.27.1"
 bytemuck = "1.7"
-
-[dependencies.bevy]
-version = "0.8.0"
-default-features = false
-features = []
