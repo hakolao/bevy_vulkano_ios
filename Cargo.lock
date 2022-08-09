@@ -2236,18 +2236,18 @@ dependencies = [
 
 [[package]]
 name = "serde"
-version = "1.0.142"
+version = "1.0.143"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e590c437916fb6b221e1d00df6e3294f3fccd70ca7e92541c475d6ed6ef5fee2"
+checksum = "53e8e5d5b70924f74ff5c6d64d9a5acd91422117c60f48c4e07855238a254553"
 dependencies = [
  "serde_derive",
 ]
 
 [[package]]
 name = "serde_derive"
-version = "1.0.142"
+version = "1.0.143"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "34b5b8d809babe02f538c2cfec6f2c1ed10804c0e5a6a041a049a4f5588ccc2e"
+checksum = "d3d8e8de557aee63c26b85b947f5e59b690d0454c753f3adeb5cd7835ab88391"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -2610,7 +2610,7 @@ dependencies = [
 [[package]]
 name = "vulkano"
 version = "0.30.0"
-source = "git+https://github.com/hakolao/vulkano?branch=ios-fix#3bc71c0b53fca8c6748e9a5a7a2d116a606e027a"
+source = "git+https://github.com/hakolao/vulkano?branch=ios-fix#6ca5bc65e04745298642143c2c8c0e33573051f6"
 dependencies = [
  "ash",
  "bytemuck",
@@ -2636,7 +2636,7 @@ dependencies = [
 [[package]]
 name = "vulkano-shaders"
 version = "0.30.0"
-source = "git+https://github.com/hakolao/vulkano?branch=ios-fix#3bc71c0b53fca8c6748e9a5a7a2d116a606e027a"
+source = "git+https://github.com/hakolao/vulkano?branch=ios-fix#6ca5bc65e04745298642143c2c8c0e33573051f6"
 dependencies = [
  "heck",
  "proc-macro2",
@@ -2649,7 +2649,7 @@ dependencies = [
 [[package]]
 name = "vulkano-util"
 version = "0.30.0"
-source = "git+https://github.com/hakolao/vulkano?branch=ios-fix#3bc71c0b53fca8c6748e9a5a7a2d116a606e027a"
+source = "git+https://github.com/hakolao/vulkano?branch=ios-fix#6ca5bc65e04745298642143c2c8c0e33573051f6"
 dependencies = [
  "vulkano",
  "vulkano-win",
@@ -2659,11 +2659,11 @@ dependencies = [
 [[package]]
 name = "vulkano-win"
 version = "0.30.0"
-source = "git+https://github.com/hakolao/vulkano?branch=ios-fix#3bc71c0b53fca8c6748e9a5a7a2d116a606e027a"
+source = "git+https://github.com/hakolao/vulkano?branch=ios-fix#6ca5bc65e04745298642143c2c8c0e33573051f6"
 dependencies = [
  "core-graphics-types",
  "objc",
- "raw-window-handle 0.4.3",
+ "raw-window-handle 0.5.0",
  "vulkano",
  "winit",
 ]
